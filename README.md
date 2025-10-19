@@ -14,10 +14,23 @@ A Go-based reverse tunnel system similar to ngrok, allowing you to expose local 
 
 ### For Users
 
-1. **Install the client**:
+1. **Install the client** (choose one):
+
+   **Option A: One-line install (recommended)**
    ```bash
-   go install github.com/you/mein-tunnel/cmd/got@latest
+   curl -sSL https://raw.githubusercontent.com/HeyRistaa/got/main/install.sh | bash
    ```
+
+   **Option B: Go install (requires Go)**
+   ```bash
+   go install github.com/HeyRistaa/got/cmd/got@latest
+   ```
+
+   **Option C: Download binary manually**
+   - Go to [releases](https://github.com/HeyRistaa/got/releases)
+   - Download the binary for your platform
+   - Make it executable: `chmod +x got-*`
+   - Move to PATH: `sudo mv got-* /usr/local/bin/got`
 
 2. **Expose a local service**:
    ```bash
