@@ -23,7 +23,7 @@ A Go-based reverse tunnel system similar to ngrok, allowing you to expose local 
 
    **Option B: Go install (requires Go)**
    ```bash
-   go install github.com/HeyRistaa/got/cmd/got@latest
+   go install github.com/HeyRistaa/got/cmd/client@latest
    ```
 
    **Option C: Download binary manually**
