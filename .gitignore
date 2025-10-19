@@ -1,0 +1,25 @@
+# Binaries
+got
+server
+got.exe
+server.exe
+server-linux
+got-linux
+
+# Logs
+*.log
+vite.log
+tunnel.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Go
+go.sum

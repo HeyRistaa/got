@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><script  class='$tsr'>(self.$R=self.$R||{})["tsr"]=[];self.$_TSR={c(){document.querySelectorAll(".\\$tsr").forEach(e=>{e.remove()})},p(e){this.initialized?e():this.buffer.push(e)},buffer:[]};
+;$_TSR.router=($R=>$R[0]={manifest:$R[1]={routes:$R[2]={__root__:$R[3]={preloads:void 0,assets:$R[4]=[$R[5]={tag:"script",attrs:$R[6]={type:"module",suppressHydrationWarning:!0,async:!0},children:"import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;;;import('/@id/virtual:tanstack-start-client-entry')"}]}},clientEntry:"/@id/virtual:tanstack-start-client-entry"},matches:$R[7]=[$R[8]={i:"__root__",u:1760806804374,s:"success",ssr:!0},$R[9]={i:"/",u:1760806804374,s:"success",ssr:!0}],lastMatchId:"/",dehydratedData:void 0})($R["tsr"]);$_TSR.c()</script><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/src/styles/app.css"/></head><body><!--$--><main class="flex min-h-screen flex-col items-center justify-center p-8 text-center"><div class="max-w-4xl mx-auto"><h4 class="text-2xl mb-6 font-medium">Hi, I&#x27;m Milos, a full-stack developer hailing from the southeastern Serbian city of Nis.</h4><p class="text-lg mb-6 leading-relaxed">Recently, I have been primarily focused on utilizing various Node.js frameworks such as Express and Fastify. Concurrently, I am deeply engaged with Next.js and React on the front-end. Currently, my active projects involve working with Elysia and Hono, aiming to advance along the Bunjs development path.</p><p class="text-lg mb-8 leading-relaxed">Moreover, I am diving into a diverse array of SQL-based databases including MySQL, PostgreSQL, SQLite (Turso), and exploring their capabilities extensively. Additionally, I am experimenting with NoSQL databases such as MongoDB and EdgeDB to broaden my understanding and application in database technologies.</p><div class="text-lg"><a href="/cv" class="underline hover:no-underline">AI CV</a> | <a class="underline hover:no-underline" href="mailto:rista90@gmail.com">Email</a> | <a class="underline hover:no-underline" href="https://www.linkedin.com/in/heyristaa/" target="_blank">LinkedIn</a> | <a class="underline hover:no-underline" href="https://x.com/HeyRistaa" target="_blank">X</a> | <a class="underline hover:no-underline" href="https://github.com/HeyRistaa" target="_blank">Github</a></div></div></main><script></script><script class="$tsr">(function restoreScroll({
+  storageKey: storageKey2,
+  key,
+  behavior,
+  shouldScrollRestoration,
+  scrollToTopSelectors,
+  location
+}) {
+  let byKey;
+  try {
+    byKey = JSON.parse(sessionStorage.getItem(storageKey2) || "{}");
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  const resolvedKey = key || window.history.state?.__TSR_key;
+  const elementEntries = byKey[resolvedKey];
+  ignoreScroll = true;
+  scroll: {
+    if (shouldScrollRestoration && elementEntries && Object.keys(elementEntries).length > 0) {
+      for (const elementSelector in elementEntries) {
+        const entry = elementEntries[elementSelector];
+        if (elementSelector === "window") {
+          window.scrollTo({
+            top: entry.scrollY,
+            left: entry.scrollX,
+            behavior
+          });
+        } else if (elementSelector) {
+          const element = document.querySelector(elementSelector);
+          if (element) {
+            element.scrollLeft = entry.scrollX;
+            element.scrollTop = entry.scrollY;
+          }
+        }
+      }
+      break scroll;
+    }
+    const hash = (location ?? window.location).hash.split("#", 2)[1];
+    if (hash) {
+      const hashScrollIntoViewOptions = window.history.state?.__hashScrollIntoViewOptions ?? true;
+      if (hashScrollIntoViewOptions) {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView(hashScrollIntoViewOptions);
+        }
+      }
+      break scroll;
+    }
+    const scrollOptions = { top: 0, left: 0, behavior };
+    window.scrollTo(scrollOptions);
+    if (scrollToTopSelectors) {
+      for (const selector of scrollToTopSelectors) {
+        if (selector === "window") continue;
+        const element = typeof selector === "function" ? selector() : document.querySelector(selector);
+        if (element) element.scrollTo(scrollOptions);
+      }
+    }
+  }
+  ignoreScroll = false;
+})({"storageKey":"tsr-scroll-restoration-v1_3","shouldScrollRestoration":true});$_TSR.c()</script><!--/$--><div></div><script type="module" async="">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;;;import('/@id/virtual:tanstack-start-client-entry')</script></body></html>
