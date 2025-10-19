@@ -8,7 +8,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/you/mein-tunnel/internal/control"
+	"github.com/HeyRistaa/got/internal/control"
 )
 
 type Client struct {

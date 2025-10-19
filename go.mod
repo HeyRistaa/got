@@ -1,4 +1,4 @@
-module github.com/you/mein-tunnel
+module github.com/HeyRistaa/got
 
 go 1.24.0
 
