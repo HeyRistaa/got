@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HeyRistaa/got/internal/caddy"
-	"github.com/HeyRistaa/got/internal/health"
+	"github.com/HeyRistaa/got/internal/proxy/caddy"
+	"github.com/HeyRistaa/got/internal/tunnel/health"
 )
 
 // Manager handles tunnel lifecycle
