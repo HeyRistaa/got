@@ -17,18 +17,16 @@ import (
 
 func main() {
 	var server string
-	var data string
 	var local string
 	var id string
 	var domain string
-	flag.StringVar(&server, "server", "", "server control address (host or host:port)")
-	flag.StringVar(&data, "data", "", "server data address (host:port)")
+	flag.StringVar(&server, "server", "", "server host (port will be 4440)")
 	flag.StringVar(&local, "local", "", "local address to forward")
 	flag.StringVar(&id, "id", "", "client identifier")
 	flag.StringVar(&domain, "domain", "", "domain to use for the tunnel")
 	flag.Parse()
 
-	// Defaults from environment or sensible fallbacks
+	// Get server host from environment or command line
 	serverHost := os.Getenv("GOT_SERVER_HOST")
 	if serverHost == "" {
 		if ip := resolveHetznerIPFromEnv(); ip != "" {
@@ -37,33 +35,15 @@ func main() {
 			serverHost = "127.0.0.1"
 		}
 	}
-	controlPort := os.Getenv("GOT_CONTROL_PORT")
-	if controlPort == "" {
-		controlPort = "4440"
-	}
-	dataPort := os.Getenv("GOT_DATA_PORT")
-	if dataPort == "" {
-		dataPort = "4441"
-	}
 
-	// If --server provided, it may be host or host:port
+	// Override with command line if provided
 	if server != "" {
-		if strings.Contains(server, ":") {
-			// Keep as-is for control, but extract host for data default
-			serverHost = strings.Split(server, ":")[0]
-			// respect provided full control address
-		} else {
-			serverHost = server
-			server = fmt.Sprintf("%s:%s", serverHost, controlPort)
-		}
-	} else {
-		server = fmt.Sprintf("%s:%s", serverHost, controlPort)
+		serverHost = server
 	}
 
-	// If --data not provided, derive from server host and dataPort
-	if data == "" {
-		data = fmt.Sprintf("%s:%s", serverHost, dataPort)
-	}
+	// Fixed ports - no environment variables needed
+	controlAddr := fmt.Sprintf("%s:4440", serverHost)
+	dataAddr := fmt.Sprintf("%s:4441", serverHost)
 
 	// Positional arg convenience: `got 3002` or `got localhost:3002`
 	if local == "" && flag.NArg() >= 1 {
@@ -80,10 +60,10 @@ func main() {
 	}
 
 	if local == "" {
-		log.Fatalf("usage: got <localPort|host:port> [flags]. Example: got 3002 or got -domain '*.apps.mydomain.com' 3002")
+		log.Fatalf("usage: got <localPort|host:port> [flags]. Example: got 3000 or got -server example.com 3000")
 	}
 
-	c := client.New(server, data, local, id, domain)
+	c := client.New(controlAddr, dataAddr, local, id, domain)
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 	if err := c.Run(ctx); err != nil {
