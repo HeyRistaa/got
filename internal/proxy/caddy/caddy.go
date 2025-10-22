@@ -23,31 +23,39 @@ func New(adminURL string) *Client {
 
 // AddRoute adds a new route to Caddy
 func (c *Client) AddRoute(host string, port int) error {
+	fmt.Printf("Adding Caddy route: %s -> 127.0.0.1:%d\n", host, port)
+
 	body := map[string]any{
-		"match":  []map[string]any{{"host": []string{host}}},
-		"handle": []map[string]any{{"handler": "reverse_proxy",
+		"match": []map[string]any{{"host": []string{host}}},
+		"handle": []map[string]any{{
+			"handler":   "reverse_proxy",
 			"upstreams": []map[string]any{{"dial": "127.0.0.1:" + fmt.Sprint(port)}},
 			"transport": map[string]any{"protocol": "http", "versions": []string{"1.1"}},
 		}},
-		"terminal": true,
+		// IMPORTANT: Do NOT set terminal=true so that ACME HTTP-01 challenge handlers
+		// can intercept /.well-known/acme-challenge/* before our reverse_proxy route.
 	}
 	var buf bytes.Buffer
 	_ = json.NewEncoder(&buf).Encode(body)
 
 	req, err := http.NewRequest("POST", c.AdminURL+"/config/apps/http/servers/srv0/routes", &buf)
 	if err != nil {
+		fmt.Printf("Failed to create Caddy request for %s: %v\n", host, err)
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
+		fmt.Printf("Failed to send Caddy request for %s: %v\n", host, err)
 		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		b, _ := io.ReadAll(resp.Body)
+		fmt.Printf("Caddy route add failed for %s: %s - %s\n", host, resp.Status, strings.TrimSpace(string(b)))
 		return fmt.Errorf("caddy add route: %s: %s", resp.Status, strings.TrimSpace(string(b)))
 	}
+	fmt.Printf("Successfully added Caddy route for %s\n", host)
 	return nil
 }
 

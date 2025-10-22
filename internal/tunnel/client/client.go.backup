@@ -1,0 +1,131 @@
+package client
+
+import (
+	"bufio"
+	"context"
+	"fmt"
+	"io"
+	"log"
+	"net"
+	"time"
+
+	"github.com/HeyRistaa/got/internal/protocol/control"
+)
+
+type Client struct {
+	ServerControl string // server control address host:port
+	ServerData    string // server data listener address host:port (client will dial)
+	LocalAddr     string // local service address to forward, e.g., 127.0.0.1:3000
+	ClientID      string // optional label
+}
+
+func New(serverControl, serverData, localAddr, clientID, domain string) *Client {
+	return &Client{ServerControl: serverControl, ServerData: serverData, LocalAddr: localAddr, ClientID: clientID}
+}
+
+func (c *Client) Run(ctx context.Context) error {
+	// Establish control connection
+	ctlConn, err := net.Dial("tcp", c.ServerControl)
+	if err != nil {
+		return fmt.Errorf("dial control: %w", err)
+	}
+	defer ctlConn.Close()
+
+	// Send open_tunnel request
+	localURL := "http://" + c.LocalAddr
+	if err := control.WriteJSONLine(ctlConn, control.OpenTunnel{
+		Type:      "open_tunnel",
+		ClientID:  c.ClientID,
+		LocalHint: c.LocalAddr,
+		LocalURL:  localURL,
+	}); err != nil {
+		return err
+	}
+
+	// Await tunnel_opened
+	r := bufio.NewReader(ctlConn)
+	var opened control.TunnelOpened
+	if err := control.ReadJSONLine(r, &opened); err != nil {
+		return fmt.Errorf("read opened: %w", err)
+	}
+	if opened.Type != "tunnel_opened" {
+		return fmt.Errorf("unexpected message: %v", opened.Type)
+	}
+	if opened.PublicHost != "" {
+		log.Printf("tunnel established: %s -> %s (https://%s)", c.LocalAddr, opened.PublicAddr, opened.PublicHost)
+	} else {
+		log.Printf("tunnel established: %s -> %s", c.LocalAddr, opened.PublicAddr)
+	}
+
+	// Start a goroutine to listen for ConnRequest on control, and then dial server data
+	go func() {
+		r := bufio.NewReader(ctlConn)
+		for {
+			var cr control.ConnRequest
+			if err := control.ReadJSONLine(r, &cr); err != nil {
+				return
+			}
+			if cr.Type != "conn_request" {
+				continue
+			}
+			// For each request, dial server's data and send DataInit, then pipe to local
+			go c.openDataAndPipe(cr)
+		}
+	}()
+
+	<-ctx.Done()
+	return nil
+}
+
+func (c *Client) openDataAndPipe(cr control.ConnRequest) {
+	// Dial server data listener
+	conn, err := net.DialTimeout("tcp", c.ServerData, 5*time.Second)
+	if err != nil {
+		log.Printf("dial server data %s: %v", c.ServerData, err)
+		return
+	}
+	// Send DataInit to match the server's pending request
+	if err := control.WriteJSONLine(conn, control.DataInit{Type: "data_init", TunnelID: cr.TunnelID, ConnID: cr.ConnID}); err != nil {
+		log.Printf("write data_init: %v", err)
+		conn.Close()
+		return
+	}
+	// Connect to local app
+	localConn, err := net.DialTimeout("tcp", c.LocalAddr, 5*time.Second)
+	if err != nil {
+		log.Printf("dial local %s: %v", c.LocalAddr, err)
+		conn.Close()
+		return
+	}
+	// Pipe both ways
+	pipe(localConn, conn)
+}
+
+func pipe(a, b net.Conn) {
+	done := make(chan struct{}, 2)
+	go func() { ioCopy(a, b); a.Close(); done <- struct{}{} }()
+	go func() { ioCopy(b, a); b.Close(); done <- struct{}{} }()
+	<-done
+	<-done
+}
+
+func ioCopy(dst, src net.Conn) (int64, error) {
+	buf := make([]byte, 32*1024)
+	var n int64
+	for {
+		nr, er := src.Read(buf)
+		if nr > 0 {
+			nw, ew := dst.Write(buf[:nr])
+			n += int64(nw)
+			if ew != nil {
+				return n, ew
+			}
+			if nw != nr {
+				return n, fmt.Errorf("short write")
+			}
+		}
+		if er != nil {
+			return n, er
+		}
+	}
+}

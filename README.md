@@ -68,7 +68,8 @@ A Go-based reverse tunnel system similar to ngrok, allowing you to expose local 
 
 ```mermaid
 graph LR
-    A[Client<br/>got 3000] -->|Control| B[Server<br/>:4440 ctrl<br/>:4441 data<br/>:XXXXX tunnel]
+    A[Client<br/>got 3000] -->|Control| B[Server<br/>:4440 ctrl<br/>:4441 data]
+    A -->|Data| B
     C[User Browser] -->|HTTPS| D[Caddy<br/>:443]
     D -->|Route by Host| B
     B -->|Bridge| A
