@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"time"
 
-	"github.com/you/mein-tunnel/internal/control"
+	"github.com/HeyRistaa/got/internal/protocol/control"
 )
 
 type Client struct {
