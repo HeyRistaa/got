@@ -1,10 +1,10 @@
 # Binaries
-got
-server
-got.exe
-server.exe
-server-linux
-got-linux
+releases/got
+releases/server
+releases/got-windows-amd64.exe
+releases/server-windows-amd64.exe
+releases/server-linux-amd64
+releases/got-linux-amd64
 
 # Logs
 *.log
