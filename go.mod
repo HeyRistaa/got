@@ -1,8 +1,8 @@
 module github.com/HeyRistaa/got
 
-go 1.24.0
+go 1.25
 
-toolchain go1.24.9
+toolchain go1.25.3
 
 require github.com/hetznercloud/hcloud-go/v2 v2.27.0
 
