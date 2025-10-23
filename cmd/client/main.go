@@ -11,6 +11,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/HeyRistaa/got/internal/colors"
 	"github.com/HeyRistaa/got/internal/tunnel/client"
 	"github.com/hetznercloud/hcloud-go/v2/hcloud"
 )
@@ -60,14 +61,19 @@ func main() {
 	}
 
 	if local == "" {
-		log.Fatalf("usage: got <localPort|host:port> [flags]. Example: got 3000 or got -server example.com 3000")
+		colors.PrintError("Usage: got <localPort|host:port> [flags]\n")
+		colors.PrintInfo("Example: got 3000 or got -server example.com 3000\n")
+		os.Exit(1)
 	}
+
+	colors.PrintRocket("Starting tunnel for " + colors.Cyan(local) + " via " + colors.Blue(controlAddr) + "\n")
 
 	c := client.New(controlAddr, dataAddr, local, id, domain)
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 	if err := c.Run(ctx); err != nil {
-		log.Fatalf("client error: %v", err)
+		colors.PrintfError("Client error: %v\n", err)
+		os.Exit(1)
 	}
 }
 

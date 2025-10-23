@@ -4,13 +4,13 @@ import (
 	"context"
 	"flag"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
 
+	"github.com/HeyRistaa/got/internal/colors"
 	"github.com/HeyRistaa/got/internal/tunnel/server"
 )
 
@@ -22,28 +22,37 @@ func main() {
 	flag.Parse()
 
 	if publicIP == "" {
+		colors.PrintInfo("Detecting public IP...\n")
 		publicIP = detectPublicIP()
 	}
 	if publicIP == "" {
-		log.Fatalf("Could not detect public IP, please provide it with the -public flag")
+		colors.PrintError("Could not detect public IP, please provide it with the -public flag\n")
+		os.Exit(1)
 	}
-	log.Printf("Public IP: %s", publicIP)
+	colors.PrintfInfo("Public IP: %s\n", colors.Bold(colors.BrightCyan(publicIP)))
 
 	// Set environment variable for health check disable
 	if disableHealthCheck {
 		os.Setenv("GOT_DISABLE_HEALTH_CHECK", "1")
-		log.Printf("Health checks disabled")
+		colors.PrintWarning("Health checks disabled\n")
 	}
 
 	// Fixed ports for simplicity
 	controlAddr := ":4440"
 	dataAddr := ":4441"
+
+	colors.PrintRocket("Starting tunnel server...\n")
+	colors.PrintfInfo("Control port: %s\n", colors.Bold(colors.Blue(controlAddr)))
+	colors.PrintfInfo("Data port: %s\n", colors.Bold(colors.Blue(dataAddr)))
+	colors.PrintSuccess("Server is ready to accept connections!\n")
+
 	srv := server.New(controlAddr, dataAddr, publicIP)
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
 	if err := srv.Run(ctx); err != nil {
-		log.Fatalf("server error: %v", err)
+		colors.PrintfError("Server error: %v\n", err)
+		os.Exit(1)
 	}
 }
 
