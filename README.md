@@ -2,6 +2,8 @@
 
 A Go-based reverse tunnel system similar to ngrok, allowing you to expose local services to the internet with custom subdomains.
 
+**Version: v0.0.2** 🎨 *Now with beautiful colors and improved UX!*
+
 ## Features
 
 - 🚀 **Simple CLI**: `got 3000` to expose local port 3000
