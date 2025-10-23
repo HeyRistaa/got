@@ -8,6 +8,7 @@ import (
 	"net"
 	"time"
 
+	"github.com/HeyRistaa/got/internal/colors"
 	"github.com/HeyRistaa/got/internal/protocol/control"
 )
 
@@ -51,9 +52,12 @@ func (c *Client) Run(ctx context.Context) error {
 		return fmt.Errorf("unexpected message: %v", opened.Type)
 	}
 	if opened.PublicHost != "" {
-		log.Printf("tunnel established: %s -> %s (https://%s)", c.LocalAddr, opened.PublicAddr, opened.PublicHost)
+		colors.PrintfSuccess("Tunnel established: %s -> %s\n", colors.Cyan(c.LocalAddr), colors.BrightCyan(opened.PublicAddr))
+		colors.PrintfGlobe("Your service is now available at: %s\n", colors.Bold(colors.BrightGreen("https://"+opened.PublicHost)))
+		colors.PrintInfo("Press Ctrl+C to stop the tunnel\n")
 	} else {
-		log.Printf("tunnel established: %s -> %s", c.LocalAddr, opened.PublicAddr)
+		colors.PrintfSuccess("Tunnel established: %s -> %s\n", colors.Cyan(c.LocalAddr), colors.BrightCyan(opened.PublicAddr))
+		colors.PrintInfo("Press Ctrl+C to stop the tunnel\n")
 	}
 
 	// Start a goroutine to listen for ConnRequest on control, and then dial server data
