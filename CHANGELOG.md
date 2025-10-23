@@ -1,0 +1,47 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [v0.0.2] - 2025-10-23
+
+### Added
+- 🎨 **Beautiful CLI colors and emojis** - Enhanced user experience with colored output
+- ✅ **Success messages** - Clear visual feedback for successful operations
+- ❌ **Error messages** - Better error reporting with red styling
+- 🚀 **Startup messages** - Informative startup information with rocket emoji
+- 🌐 **Tunnel status** - Clear indication when tunnels are established
+- ℹ️ **Info messages** - Helpful information with blue styling
+- ⚠️ **Warning messages** - Important notices with yellow styling
+
+### Improved
+- **Better error handling** - More descriptive error messages
+- **Enhanced UX** - Visual hierarchy with colors and emojis
+- **Cleaner output** - Organized and easy-to-read console output
+- **Professional appearance** - Modern CLI that looks polished
+
+### Technical Changes
+- Added `internal/colors/colors.go` - Comprehensive color system
+- Updated `cmd/client/main.go` - Added colored startup and error messages
+- Updated `cmd/server/main.go` - Added colored server startup messages
+- Updated `internal/tunnel/client/client.go` - Added colored tunnel status messages
+- Removed unused `log` import from server
+- Fixed function name collisions in color package
+
+### Bug fixes
+- Fix SSL issue with multiple client connected
+
+## [v0.0.1] - 2025-10-21
+
+### Added
+- 🚀 **Initial release** - Basic reverse tunnel functionality
+- 🌐 **Custom subdomains** - Random subdomain generation
+- 🔒 **HTTPS support** - Automatic SSL certificates via Let's Encrypt
+- ⚡ **High performance** - Built with Go for speed
+- 🔄 **Concurrent tunnels** - Support for multiple simultaneous tunnels
+- 🛠️ **Easy setup** - Simple installation and configuration
+- 📦 **Cross-platform** - Works on Windows, macOS, and Linux
+- 🎯 **Simple CLI** - `got 3000` to expose local port 3000
+- 🖥️ **Server management** - `server` command for tunnel server
+- 🔧 **Health checks** - Automatic tunnel health monitoring
+- 📊 **Debug logging** - Comprehensive logging for troubleshooting
+- 🎛️ **Configuration** - Environment variables and command-line options
