@@ -1,4 +1,4 @@
-# Mein Tunnel
+# GOT (Simple http tunnel in GO)
 
 A Go-based reverse tunnel system similar to ngrok, allowing you to expose local services to the internet with custom subdomains.
 
