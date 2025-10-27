@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Build script for Mein Tunnel v0.0.2
+# Build script for Mein Tunnel v0.0.3
 set -e
 
-VERSION="v0.0.2"
+VERSION="v0.0.3"
 BUILD_DIR="releases"
 DATE=$(date +%Y-%m-%d)
 
-echo "🚀 Building Mein Tunnel $VERSION"
+echo "🚀 Building GOT $VERSION"
 echo "📅 Build date: $DATE"
 echo ""
 

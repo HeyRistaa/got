@@ -105,7 +105,7 @@ func (s *Server) handleControl(conn net.Conn) {
 	defer conn.Close()
 	r := bufio.NewReader(conn)
 
-	var req control.OpenTunnel
+	var ./ control.OpenTunnel
 	if err := control.ReadJSONLine(r, &req); err != nil {
 		log.Printf("control: read open_tunnel: %v", err)
 		return
