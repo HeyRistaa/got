@@ -1,12 +1,12 @@
-# GOT (Simple http tunnel in GO)
+# GOT (Go Reverse Tunnel)
 
-A Go-based reverse tunnel system similar to ngrok, allowing you to expose local services to the internet with custom subdomains.
+A Go-based reverse tunnel system that allows you to expose local services to the internet with custom subdomains.
 
-**Version: v0.0.2** 🎨 *Now with beautiful colors and improved UX!*
+**Version: v0.0.3** 🚀 *Clean, professional, and ready for public release!*
 
 ## Features
 
-- 🚀 **Simple CLI**: `got 3000` to expose local port 3000
+- 🚀 **Simple CLI**: `got 3000` to tunnel local port 3000
 - 🌐 **Custom Subdomains**: Get random subdomains like `abc123.showapps.online`
 - 🔒 **SSL/TLS**: Automatic HTTPS with Let's Encrypt certificates
 - ⚡ **Fast**: Built with Go for high performance
@@ -34,7 +34,7 @@ A Go-based reverse tunnel system similar to ngrok, allowing you to expose local 
    - Make it executable: `chmod +x got-*`
    - Move to PATH: `sudo mv got-* /usr/local/bin/got`
 
-2. **Expose a local service**:
+2. **Tunnel a local service**:
    ```bash
    got 3000
    # Output: tunnel established: localhost:3000 -> 168.119.161.113:45123 (https://abc123.showapps.online)
