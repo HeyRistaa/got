@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.0.3] - 2025-01-21
+
+### 🧹 **Cleanup & Polish**
+- **Removed ngrok references** - Cleaned up all ngrok comparisons for professional presentation
+- **Updated terminology** - Changed "expose" to "tunnel" for better clarity
+- **Improved branding** - Updated title to "Go Reverse Tunnel" for better recognition
+- **Professional release** - Prepared for public repository release
+
+### 🎨 **UI/UX Improvements**
+- **Enhanced CLI colors** - Beautiful colored output with emojis and better visual feedback
+- **Improved error messages** - More descriptive and user-friendly error handling
+- **Better startup messages** - Clear visual indicators for tunnel establishment
+
+### 🔧 **Technical Improvements**
+- **Code organization** - Better structured codebase with clear separation of concerns
+- **Documentation updates** - Comprehensive README with architecture diagrams
+- **Version management** - Proper version tracking and release preparation
+
+## [v0.0.2] - 2025-01-21
+
 ## [v0.0.2] - 2025-10-23
 
 ### Added
@@ -40,7 +60,7 @@ All notable changes to this project will be documented in this file.
 - 🔄 **Concurrent tunnels** - Support for multiple simultaneous tunnels
 - 🛠️ **Easy setup** - Simple installation and configuration
 - 📦 **Cross-platform** - Works on Windows, macOS, and Linux
-- 🎯 **Simple CLI** - `got 3000` to expose local port 3000
+- 🎯 **Simple CLI** - `got 3000` to tunnel local port 3000
 - 🖥️ **Server management** - `server` command for tunnel server
 - 🔧 **Health checks** - Automatic tunnel health monitoring
 - 📊 **Debug logging** - Comprehensive logging for troubleshooting
