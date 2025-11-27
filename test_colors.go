@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/HeyRistaa/got/internal/colors"
 )
 
