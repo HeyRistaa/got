@@ -2,10 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [v0.0.3] - 2025-01-21
+## [v0.0.4] - 2025-12-11
+
+- **Rate limiting feature re-implemented** - Prevent abuse with configurable limits (5 tunnels per minute, 20 per hour)
+- **Custom subdomain feature started** - It should be introduced in v0.0.5 or v0.0.6
+
+## [v0.0.3] - 2025-10-27
 
 ### 🧹 **Cleanup & Polish**
-- **Removed ngrok references** - Cleaned up all ngrok comparisons for professional presentation
 - **Updated terminology** - Changed "expose" to "tunnel" for better clarity
 - **Improved branding** - Updated title to "Go Reverse Tunnel" for better recognition
 - **Professional release** - Prepared for public repository release
@@ -26,8 +30,6 @@ All notable changes to this project will be documented in this file.
 - **Code organization** - Better structured codebase with clear separation of concerns
 - **Documentation updates** - Comprehensive README with architecture diagrams
 - **Version management** - Proper version tracking and release preparation
-
-## [v0.0.2] - 2025-01-21
 
 ## [v0.0.2] - 2025-10-23
 

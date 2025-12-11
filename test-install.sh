@@ -1,5 +1,5 @@
 #!/bin/bash
-# Test installation script for v0.0.3
+# Test installation script for v0.0.4
 
 echo "🧪 Testing installation script..."
 echo ""
@@ -17,7 +17,7 @@ echo "  3. Check if 'got --help' works"
 echo ""
 echo "📝 Manual test steps:"
 echo "  1. Make repository public"
-echo "  2. Create GitHub release v0.0.3"
+echo "  2. Create GitHub release v0.0.4"
 echo "  3. Upload all binaries from releases/ directory"
 echo "  4. Test installation script from a clean machine"
 

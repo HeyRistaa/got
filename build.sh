@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-VERSION="v0.0.3"
+VERSION="v0.0.4"
 BUILD_DIR="releases"
 DATE=$(date +%Y-%m-%d)
 
@@ -44,5 +44,5 @@ echo "📁 Binaries are in the $BUILD_DIR/ directory:"
 ls -lh $BUILD_DIR/
 
 echo ""
-echo "✅ Ready for release v0.0.3!"
+echo "✅ Ready for release v0.0.4!"
 

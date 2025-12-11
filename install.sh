@@ -31,7 +31,7 @@ case "$(uname -m)" in
 esac
 
 # Set version (update this for new releases)
-VERSION="v0.0.3"
+VERSION="v0.0.4"
 
 # Determine binary name
 if [ "$OS" = "windows" ]; then

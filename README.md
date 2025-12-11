@@ -2,7 +2,7 @@
 
 A Go-based reverse tunnel system that allows you to expose local services to the internet with custom subdomains.
 
-**Version: v0.0.3** 🚀
+**Version: v0.0.4** 🚀
 
 ## Features
 

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Build script for Mein Tunnel v0.0.3
+# Build script for Mein Tunnel v0.0.4
 set -e
 
-VERSION="v0.0.3"
+VERSION="v0.0.4"
 BUILD_DIR="releases"
 DATE=$(date +%Y-%m-%d)
 
