@@ -27,19 +27,20 @@ func main() {
 	flag.StringVar(&domain, "domain", "", "domain to use for the tunnel")
 	flag.Parse()
 
-	// Get server host from environment or command line
-	serverHost := os.Getenv("GOT_SERVER_HOST")
-	if serverHost == "" {
-		if ip := resolveHetznerIPFromEnv(); ip != "" {
-			serverHost = ip
-		} else {
-			serverHost = "127.0.0.1"
-		}
-	}
-
-	// Override with command line if provided
+	// Get server host - priority: CLI > env > Hetzner API
+	// Security: Do NOT hardcode production server IP in public repo
+	serverHost := ""
 	if server != "" {
 		serverHost = server
+	} else if envHost := os.Getenv("GOT_SERVER_HOST"); envHost != "" {
+		serverHost = envHost
+	} else if ip := resolveHetznerIPFromEnv(); ip != "" {
+		serverHost = ip
+	} else {
+		colors.PrintError("Error: Server not specified. Please provide a server host.\n")
+		colors.PrintInfo("Usage: got -server <host> <port>\n")
+		colors.PrintInfo("Or set GOT_SERVER_HOST environment variable\n")
+		os.Exit(1)
 	}
 
 	// Fixed ports - no environment variables needed
@@ -61,8 +62,9 @@ func main() {
 	}
 
 	if local == "" {
-		colors.PrintError("Usage: got <localPort|host:port> [flags]\n")
-		colors.PrintInfo("Example: got 3000 or got -server example.com 3000\n")
+		colors.PrintError("Usage: got -server <host> <localPort|host:port> [flags]\n")
+		colors.PrintInfo("Example: got -server your-server.com 3000\n")
+		colors.PrintInfo("Or set GOT_SERVER_HOST environment variable and use: got 3000\n")
 		os.Exit(1)
 	}
 
