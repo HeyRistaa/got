@@ -4,7 +4,7 @@
 $ErrorActionPreference = "Stop"
 
 # Set version (update this for new releases)
-$VERSION = "v0.0.1"
+$VERSION = "v0.0.3"
 
 # Detect architecture
 $ARCH = if ([Environment]::Is64BitOperatingSystem) { "amd64" } else { "386" }

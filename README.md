@@ -2,7 +2,7 @@
 
 A Go-based reverse tunnel system that allows you to expose local services to the internet with custom subdomains.
 
-**Version: v0.0.3** 🚀 *Clean, professional, and ready for public release!*
+**Version: v0.0.3** 🚀
 
 ## Features
 
@@ -36,11 +36,17 @@ A Go-based reverse tunnel system that allows you to expose local services to the
 
 2. **Tunnel a local service**:
    ```bash
+   got -server [SERVER_IP] -domain https://expmple-domain.com 3000
+   # Output: tunnel established: localhost:3000 -> [SERVER_IP]:45123  -> [DOMAIN]
+   ```
+   
+   Or set a default server via environment variable:
+   ```bash
+   export GOT_SERVER_HOST=your-server.com
    got 3000
-   # Output: tunnel established: localhost:3000 -> 168.119.161.113:45123 (https://abc123.showapps.online)
    ```
 
-3. **Share your URL**: `https://abc123.showapps.online`
+3. **Share your URL**: The tunnel URL will be shown in the output
 
 ### For Server Administrators
 
@@ -116,7 +122,7 @@ sequenceDiagram
 
 ### Client Environment Variables
 
-- `GOT_SERVER_HOST`: Server hostname (default: auto-detect from Hetzner)
+- `GOT_SERVER_HOST`: Server hostname (required if not specified via `-server` flag)
 - `GOT_CONTROL_PORT`: Control port (default: 4440)
 - `GOT_DATA_PORT`: Data port (default: 4441)
 
@@ -178,6 +184,40 @@ graph TB
     style F fill:#fff3e0
     style G fill:#e8f5e8
 ```
+
+## Security Considerations
+
+### Abuse Prevention
+The server includes built-in rate limiting to prevent abuse:
+- **5 tunnels per minute** per IP address (connection-level protection)
+- **20 tunnels per hour** per IP address
+- Automatic cleanup of expired tunnels
+- **Early connection rejection** - connections are rate-limited before processing
+
+### Server Security
+- **No authentication required** - Anyone can connect to your server (like ngrok)
+- The server IP will be publicly visible when users connect
+- Rate limiting protects against abuse
+- Monitor server logs for suspicious activity
+
+### Best Practices for Production Servers
+#### OS-Level Protection
+- **Use a hosting provider with DDoS protection** (Hetzner, AWS, Cloudflare)
+- **Configure firewall rules** - Only expose necessary ports (4440, 4441, 443, 80)
+- **Install fail2ban** - Automatically ban malicious IPs
+- **Use a domain name** - Easier to change IP if attacked
+- **Enable SSH key authentication** - Disable password logins
+- **Keep your OS updated** - Regular security patches
+
+#### Application-Level Protection (Already Included)
+- Rate limiting (5/min, 20/hour per IP)
+- Early connection rejection
+- Tunnel cleanup on disconnect
+
+#### Monitoring
+- Monitor tunnel creation and usage
+- Watch for suspicious patterns in logs
+- Consider implementing additional authentication for production use
 
 ## License
 

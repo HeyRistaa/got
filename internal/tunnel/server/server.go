@@ -30,6 +30,7 @@ type Server struct {
 	pending   map[string]chan net.Conn // connID -> ready data conn from client
 
 	tunnelManager *tunnel.Manager
+	rateLimiter   *RateLimiter
 }
 
 type tunnelInfo struct {
@@ -46,6 +47,7 @@ func New(controlAddr, dataAddr, publicIP string) *Server {
 		ports:         make(map[int]string),
 		pending:       make(map[string]chan net.Conn),
 		tunnelManager: tunnel.NewManager(),
+		rateLimiter:   NewRateLimiter(5, 20), // 5 per minute, 20 per hour
 	}
 }
 
@@ -77,6 +79,13 @@ func (s *Server) Run(ctx context.Context) error {
 				log.Printf("accept control: %v", err)
 				continue
 			}
+			// Check rate limit before processing
+			clientIP := conn.RemoteAddr().(*net.TCPAddr).IP.String()
+			if !s.rateLimiter.Allow(clientIP) {
+				log.Printf("Rate limit exceeded for IP %s, closing connection", clientIP)
+				conn.Close()
+				continue
+			}
 			go s.handleControl(conn)
 		}
 	}()
@@ -105,6 +114,14 @@ func (s *Server) handleControl(conn net.Conn) {
 	defer conn.Close()
 	r := bufio.NewReader(conn)
 
+	// Extract client IP for rate limiting
+	clientIP := conn.RemoteAddr().(*net.TCPAddr).IP.String()
+	if !s.rateLimiter.Allow(clientIP) {
+		log.Printf("Rate limit exceeded for IP %s", clientIP)
+		_ = control.WriteJSONLine(conn, control.TunnelError{Type: "tunnel_error", Error: "rate limit exceeded"})
+		return
+	}
+
 	var req control.OpenTunnel
 	if err := control.ReadJSONLine(r, &req); err != nil {
 		log.Printf("control: read open_tunnel: %v", err)
@@ -115,7 +132,7 @@ func (s *Server) handleControl(conn net.Conn) {
 		return
 	}
 
-	log.Printf("Received open_tunnel request from client %s for local %s", req.ClientID, req.LocalHint)
+	log.Printf("Received open_tunnel request from client %s (IP: %s) for local %s", req.ClientID, clientIP, req.LocalHint)
 	log.Printf("Current active tunnels: %d", len(s.tunnels))
 
 	// Create tunnel using tunnel manager

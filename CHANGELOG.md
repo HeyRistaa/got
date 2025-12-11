@@ -10,6 +10,13 @@ All notable changes to this project will be documented in this file.
 - **Improved branding** - Updated title to "Go Reverse Tunnel" for better recognition
 - **Professional release** - Prepared for public repository release
 
+### 🔒 **Security & Abuse Prevention**
+- **Rate limiting** - Prevent abuse with configurable limits (5 tunnels per minute, 20 per hour)
+- **IP-based tracking** - Track and limit connections by IP address
+- **Removed hardcoded server** - No longer hardcodes production server IP in public repository
+- **Explicit server specification** - Users must specify server via `-server` flag or `GOT_SERVER_HOST` env
+- **Better error messages** - Clear guidance when server is not specified
+
 ### 🎨 **UI/UX Improvements**
 - **Enhanced CLI colors** - Beautiful colored output with emojis and better visual feedback
 - **Improved error messages** - More descriptive and user-friendly error handling
